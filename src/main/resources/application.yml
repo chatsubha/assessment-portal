@@ -1,0 +1,15 @@
+spring:
+  profiles.active: dev
+
+---
+
+spring:
+  profiles: dev
+logging:
+  level:
+    org.springframework.web: ERROR
+    com.portal.controller: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file: ${root_path}/log/application.log
