@@ -54,6 +54,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 					String category= lookupTableDao.getLookupTableDesc("tblcategory","category_id","lcase(category_name)=?",new Object[]{row.getCell(3).toString().toLowerCase()});
 					String comlexity= lookupTableDao.getLookupTableDesc("tblcomplexity","complexity","lcase(description)=?",new Object[]{row.getCell(4).toString().toLowerCase()});
 					System.out.println(questionDesc +":"+answerType+":"+category+":"+comlexity);
+					//Validation part should be added here
 					if (id!=0) {
 						Question question =new Question();
 						question.setQuestionId(id);

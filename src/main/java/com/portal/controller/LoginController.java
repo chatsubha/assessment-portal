@@ -1,8 +1,11 @@
 package com.portal.controller;
 
+import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +22,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.portal.ldap.handler.LoginAuthSuccessHandler;
 import com.portal.model.User;
+import com.portal.service.RegistrationService;
 import com.portal.service.UserService;
 import com.portal.service.impl.UserServiceImpl;
 import com.portal.validator.UserLogin;
@@ -28,7 +33,8 @@ import com.portal.validator.UserLogin;
 @SessionAttributes("username")
 
 public class LoginController {
-
+	
+	Logger logger=LoggerFactory.getLogger(LoginController.class);
 	@Autowired
 	UserService userservice;
     
@@ -37,6 +43,9 @@ public class LoginController {
 	
 	@Autowired
 	private UserLogin userLoginValidator;
+	
+	@Autowired
+	private RegistrationService registrationService;
 
 	@RequestMapping(value="/")
 	public String showLoginPage(ModelMap model){
@@ -61,7 +70,7 @@ public class LoginController {
 	
 	
 	@RequestMapping(value="/assessment", method = RequestMethod.POST)
-	public ModelAndView showWelcomePage(ModelMap model, HttpSession session, @RequestParam String name, @RequestParam String password){
+	public ModelAndView showWelcomePage(ModelMap model, HttpSession session, @RequestParam String name, @RequestParam String password) throws NamingException{
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("login");
@@ -76,6 +85,7 @@ public class LoginController {
 
 		String role = null;
         int uid=0; 
+        String userMail=null;
         if(session.getAttribute("userId")!=null) {
         	name = session.getAttribute("username").toString();
         	role = session.getAttribute("userRole").toString();
@@ -102,16 +112,25 @@ public class LoginController {
         		model.put("password", password);
                 
 		role = userservice.checkRole(name);
+		
 		if (role==null) {
-			modelAndView.setViewName("redirectReg");
-			return modelAndView;
+//			modelAndView.setViewName("redirectReg");
+//			return modelAndView;
+			role="user";
+			User user=new User();
+			user.setUser_name(name);
+			user.setEmail(LoginAuthSuccessHandler.fetchUserMailId(name, password));
+			user.setRole("user");
+			registrationService.insertUserDetails(user);
+			logger.error("First time user insertion was successfull");
 		}
 		
 		uid =userservice.getUid(name);
-        
+        userMail=userservice.fetchUserEmail(name);
 		session.setAttribute("username", name);
 	    session.setAttribute("userId", uid);
 	    session.setAttribute("userRole", role);
+	    session.setAttribute("userMail", userMail);
 
 		if(role != null && role.equals("admin"))
 		{

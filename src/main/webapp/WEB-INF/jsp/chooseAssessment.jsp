@@ -104,7 +104,7 @@ div.a {
 					<li align="left">
 					<a href="#" class="btn btn-sm btn-default">
 					<span class="glyphicon glyphicon-user"></span>
-					 ${sessionScope.CN}
+					&nbsp; ${sessionScope.CN} (${sessionScope.userMail})
 					 </a>
 					</li>
 					<li align="left">

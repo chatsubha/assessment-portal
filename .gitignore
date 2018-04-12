@@ -21,4 +21,4 @@ build/
 nbbuild/
 dist/
 nbdist/
-.nb-gradle/
+.nb-gradle/### ignore all logs ###*.log###encrypted file###*.encrypted

@@ -139,10 +139,10 @@ input::placeholder{
 				</div>
 				<div class="panel-header">
 					<br>
-					<ul class="list-inline" align="right">
+					<%-- <ul class="list-inline" align="right">
 						<li><a href="registrationForm">Register</a></li>
 						<%-- <li><a href="forgetPassword">Forgot Password?</a></li>--%>
-					</ul>
+					<%--</ul>--%>
 				</div>
 
 				<div align="center">

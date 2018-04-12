@@ -1,7 +1,16 @@
 package com.portal.ldap.handler;
 
 import java.io.IOException;
+import java.util.Properties;
 
+import javax.naming.Context;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,5 +40,39 @@ public class LoginAuthSuccessHandler implements AuthenticationSuccessHandler {
 		RequestDispatcher dispatch=request.getRequestDispatcher("/assessment");
 		dispatch.forward(request, response);
 	}
-
+	
+	public static String fetchUserMailId(String userName,String Password) throws NamingException {
+		
+		Properties inititalProperties=new Properties();
+		inititalProperties.put(Context.SECURITY_CREDENTIALS,Password);
+		inititalProperties.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+		inititalProperties.put(Context.PROVIDER_URL,"ldap://CTS.com/dc=CTS,dc=com");
+		inititalProperties.put(Context.SECURITY_PRINCIPAL, userName);
+		inititalProperties.put("com.sun.jndi.ldap.connect.timeout", "300000");
+		DirContext context=new InitialDirContext(inititalProperties);
+		System.out.print("done");
+		String seatchFilter="(userPrincipalName="+userName+")";
+		String[] attributes={"msRTCSIP-PrimaryUserAddress"};
+		SearchControls controls=new SearchControls();
+		controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+		controls.setReturningAttributes(attributes);
+		NamingEnumeration users=context.search("ou=Users,ou=WCB,ou=Chennai,ou=India,ou=APAC,ou=Cognizant", seatchFilter,controls);
+		SearchResult searchResult=null;
+		String mailId=null;
+		
+		while(users.hasMore()) {
+			searchResult=(SearchResult)users.next();
+			Attributes attribute=searchResult.getAttributes();
+			System.out.println(attribute.toString());
+			mailId=attribute.get("msRTCSIP-PrimaryUserAddress").get(0).toString();
+			System.out.println(mailId.split(":")[1]);
+			
+		}
+		
+		context.close();
+		return mailId.split(":")[1];
+	}
+	
 }
+
+
