@@ -80,6 +80,10 @@
 .headerText {
 	padding-top: 1px;
 }
+.panel
+{
+margin-left:5%;width:90%
+}
 </style>
 
 </head>
@@ -90,6 +94,9 @@
 			modelAttribute="adminForm" name="categoryForm">
 			<input type="hidden" name="categoryId" id="categoryId" />
 			<input type="hidden" name="categoryNameId" id="categoryNameId">
+			<div class="panel panel-info">
+ <div class="panel-heading"><p><span class="glyphicon glyphicon-info-sign"></span>&nbsp;Category Info </p>	</div>
+    <div class="panel-body">
 			<table id="category" class="table table-hover">
 				<thead>
 					<tr>
@@ -107,14 +114,19 @@
 						<td>${category.cutOff}</td>
 						<td>${category.maximumAttempts}</td>
 						<td><a href="#"
-							onclick="javascript:onClickViewQuestionDetails(${category.categoryId},'${category.categoryName}')">View
-								Questions</a> | <a href="#"
-							onclick="javascript:loadCategoryDetails(${category.categoryId},'${category.categoryName}')">Edit</a> | 
+							onclick="javascript:onClickViewQuestionDetails(${category.categoryId},'${category.categoryName}')">
+							<span class="glyphicon glyphicon-eye-open"></span>
+							&nbsp;View Questions</a> | <a href="#"
+							onclick="javascript:loadCategoryDetails(${category.categoryId},'${category.categoryName}')">
+							<span class="glyphicon glyphicon-pencil"></span>
+							&nbsp;Edit</a> | 
 							<a href="#"
-							onclick="javascript:onClickDeleteCategory(${category.categoryId},'${category.categoryName}')">Delete</a></td>
+							onclick="javascript:onClickDeleteCategory(${category.categoryId},'${category.categoryName}')">
+							<span class="glyphicon glyphicon-trash"></span>&nbsp;Delete</a></td>
 					</tr>
 				</c:forEach>
 			</table>
+			</div></div>
 			<button onclick="javascript:loadCategoryDetails('','')"
 				class="btn btn-primary" style="margin-right: 2%; float: right;"
 				type="button">Add Category</button>

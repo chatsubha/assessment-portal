@@ -20,11 +20,18 @@
 
 </head>
 <body>
+<br/><br/><br/>
+<div class="panel panel-info">
+ <div class="panel-heading"><p><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Options</p>	</div>
+    <div class="panel-body">
+    <p style="cursor:pointer;font-color:#337ab7;font-size:14px; float: right;"  onclick="$('html, body').animate({'scrollTop' : $('#question').position().top});">
+			<span class="glyphicon glyphicon-arrow-up"></span>&nbsp;Go to question</p>
 	<div align="left">
-		<table>
+		<table id="optionDisaplyTbl">
+		<tr><th><h5>Selected Question &nbsp;</h5></th></tr>
 			<tr>
-				<td><h5>Selected Question &nbsp;</h5> </td>
-				<td><h4 id="questionDesc"></h4></td>
+				
+				<td><label style="background-color:#d9edf7" id="questionDesc"></label></td>
 			</tr>
 		</table>
 	</div>
@@ -43,9 +50,11 @@
 					<td>${options.optionsDesc}</td>
 					<td>${options.correctAnswer}</td>
 					<td><a href="#"
-						onclick="javascript:loadOptionDetails(${options.optionsId},'${options.optionsDesc}')">Edit</a> | 
+						onclick="javascript:loadOptionDetails(${options.optionsId},'${options.optionsDesc}')">
+						<span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</a> | 
 						<a href="#"
-						onclick="javascript:onClickDeleteOption(${options.optionsId},'${options.optionsDesc}')">Delete</a></td>
+						onclick="javascript:onClickDeleteOption(${options.optionsId},'${options.optionsDesc}')">
+						<span class="glyphicon glyphicon-trash"></span>&nbsp;Delete</a></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -96,6 +105,8 @@
 			</div>
 		</form:form>
 	</div>
+</div>
+</div>
 
 
 </body>

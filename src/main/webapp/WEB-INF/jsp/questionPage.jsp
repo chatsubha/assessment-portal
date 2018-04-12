@@ -55,8 +55,12 @@
 	</div>
 	
 	<button onclick="window.location='/admin';" type="button"
-			style="margin-right: 2%; float: right; width: 115px" class="btn btn-primary">Back</button></br></br></br>
-			
+			style="margin-right: 2%; float: right; width: 115px" class="btn btn-primary">
+			<span class="glyphicon glyphicon-backward"></span>&nbsp;
+			Back</button></br></br></br>
+<div class="panel panel-info">
+ <div class="panel-heading"><p><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View questions </p>	</div>
+    <div class="panel-body">			
 	<form:form action="admin/deleteQuestion" method="post"
 		modelAttribute="adminForm">
 		<input type="hidden" name="questionId" id="questionId">
@@ -83,11 +87,13 @@
 							columnName="DESCRIPTION" tableName="AP.TBLCOMPLEXITY" />
 					</td>
 					<td><a href="#assa"
-						onclick="javascript:onClickViewOptionDetails(${question.questionId},'${question.questionDesc}')">View
-							Options</a> | <a href="#"
-						onclick="javascript:loadQuestionDetails(${question.questionId},'${question.questionDesc}')">Edit</a> | 
+						onclick="javascript:onClickViewOptionDetails(${question.questionId},'${question.questionDesc}')">
+						<span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Options</a> | <a href="#"
+						onclick="javascript:loadQuestionDetails(${question.questionId},'${question.questionDesc}')">
+						<span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</a> | 
 						<a href="#"
-						onclick="javascript:onClickDeleteQuestion(${question.questionId},'${question.questionDesc}')">Delete</a></td>
+						onclick="javascript:onClickDeleteQuestion(${question.questionId},'${question.questionDesc}')">
+						<span class="glyphicon glyphicon-trash"></span>&nbsp;Delete</a></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -95,6 +101,7 @@
 			style="margin-right: 2%; float: right;" class="btn btn-primary">Add
 			Question</button>
 	</form:form>
+	</div></div>
 	<div id="questionDiv" class="modal">
 		<form:form class="modal-content-questions" action="admin/addQuestion"
 			method="POST" modelAttribute="adminForm" id="questionFormId"
@@ -303,6 +310,9 @@
 			data : { "questionId" : questionId},
 			success : function(response) {
 				 $("#optionsListId").html(response);
+				 $('html, body').animate({
+				        'scrollTop' : $("#optionsListId").position().top
+				    });
 				 $("#questionDesc").html("");
 				 $("#questionDesc").html(questionDesc);
 			},

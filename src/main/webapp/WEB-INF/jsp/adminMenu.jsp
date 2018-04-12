@@ -39,6 +39,7 @@
     position: absolute;
     background-color: #f1f1f1;
     min-width: 160px;
+    width:250px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
@@ -94,14 +95,25 @@
 						Service<span class="caret"></span>
 					</button>
 					<div class="dropdown-content">
-						<a href="/admin">Category/Questions</a>
+						<a href="/admin">
+						<span class="glyphicon glyphicon-question-sign"></span>
+						Category/Questions
+						</a>
 						<a href="#"
-							onclick="javascript:getCntForQuestPerAttempts()">Configure
+							onclick="javascript:getCntForQuestPerAttempts()">
+							<span class="glyphicon glyphicon-cog"></span>
+							Configure
 								Questions/Attempts</a>
 						<a href="#"
-							onclick="javascript:getUserActivityForm()">User Activity</a>
+							onclick="javascript:getUserActivityForm()">
+							<span class="glyphicon glyphicon-user"></span>
+							User Activity
+							</a>
 						<a href="#"
-							onclick="javascript:getUploadForm()">Bulk upload from Excel</a>
+							onclick="javascript:getUploadForm()">
+							<span class="glyphicon glyphicon-circle-arrow-up"></span>
+							Bulk upload from Excel
+							</a>
 					</div>
 				</div>
 				<ul class="nav navbar-nav navbar-right">
