@@ -56,7 +56,7 @@ public class LoginAuthSuccessHandler implements AuthenticationSuccessHandler {
 		SearchControls controls=new SearchControls();
 		controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 		controls.setReturningAttributes(attributes);
-		NamingEnumeration users=context.search("ou=Users,ou=WCB,ou=Chennai,ou=India,ou=APAC,ou=Cognizant", seatchFilter,controls);
+		NamingEnumeration users=context.search("ou=Cognizant", seatchFilter,controls);
 		SearchResult searchResult=null;
 		String mailId=null;
 		
