@@ -48,8 +48,32 @@ public class LoginController {
 	private RegistrationService registrationService;
 
 	@RequestMapping(value="/")
-	public String showLoginPage(ModelMap model){
-		return "login";
+	public ModelAndView showLoginPage(HttpSession session,ModelMap model){
+		
+		String role = null;
+		String name = null;
+		int uid = 0;
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("login");
+		if(session.getAttribute("userId")!=null) {
+			name = session.getAttribute("username").toString();
+        	role = session.getAttribute("userRole").toString();
+        	uid  = Integer.parseInt(session.getAttribute("userId").toString());
+        	model.put("username", name);
+    		
+    		
+    		if(role != null && role.equals("admin"))
+    		{
+    			modelAndView.setViewName("redirect:/admin");								
+    		}
+    		else
+    		{
+    			
+    			modelAndView.setViewName("redirect:/chooseAssessment");
+//    			modelAndView.setViewName("redirect:/assessmentHistory");
+    		}
+		}
+		return modelAndView;
 	}
 	
 	@RequestMapping(value="/login")

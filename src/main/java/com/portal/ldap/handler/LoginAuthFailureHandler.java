@@ -23,9 +23,9 @@ public class LoginAuthFailureHandler implements AuthenticationFailureHandler {
 			org.springframework.security.core.AuthenticationException exception) throws IOException, ServletException {
 		
 //		response.sendRedirect(arg0);
-		logger.error(exception.getLocalizedMessage(),exception);
+		
 		if (exception!=null) {
-			
+			logger.error(exception.getLocalizedMessage(),exception);
 			exception.printStackTrace();
 			if(exception.getLocalizedMessage().contains("Bad credentials")) {
 				

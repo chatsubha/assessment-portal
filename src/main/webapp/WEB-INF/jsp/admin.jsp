@@ -129,7 +129,8 @@ margin-left:5%;width:90%
 			</div></div>
 			<button onclick="javascript:loadCategoryDetails('','')"
 				class="btn btn-primary" style="margin-right: 2%; float: right;"
-				type="button">Add Category</button>
+				type="button">
+				<span class="glyphicon glyphicon-plus"></span>&nbsp;Add Category</button>
 		</form:form>
 	</div>
 	<div id="usersHistoryField"></div>
