@@ -66,6 +66,7 @@
 		<input type="hidden" name="questionId" id="questionId">
 		<table id="question" class="table table-hover">
 			<tr>
+			    <th>Question ID </th>
 				<th>Question Description</th>
 				<th>Answer Type</th>
 				<th>Complexity</th>
@@ -74,6 +75,7 @@
 
 			<c:forEach items="${adminForm.questionList}" var="question">
 				<tr>
+				    <td>${question.questionId}</td>
 					<td>${question.questionDesc}</td>
 					<td>
 						<%--${question.answerType}--%> <customtag:lookupDesc

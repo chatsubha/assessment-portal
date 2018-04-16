@@ -117,4 +117,9 @@ public class QuestionServiceImpl implements QuestionService {
 
 	}
 
+	@Override
+	public int fetchMaxId() {
+		return questionDao.fetchMaxIdOfQuestion();
+	}
+
 }

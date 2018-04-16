@@ -4,6 +4,8 @@ import java.io.InputStream;
 
 public interface FileUploadService {
 	
-	public int processExcelData(InputStream inputStream);
+	public String processExcelData(InputStream inputStream);
+	
+	public String processExcelDataForEx2003(InputStream inputStream);
 
 }

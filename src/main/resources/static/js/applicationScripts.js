@@ -16,7 +16,10 @@
 			title : opts.title,
 			height : opts.height,
 			width : opts.width,
-			buttons : opts.buttons
+			buttons : opts.buttons,
+			beforeClose: function(event, ui) {
+				$('body').find($('#dialog-confirm')).remove();
+			}
 		});
 
 	};

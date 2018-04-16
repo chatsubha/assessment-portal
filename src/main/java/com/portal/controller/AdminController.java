@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.jboss.logging.FormatWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,11 +88,26 @@ public class AdminController {
 	 * @return the view page
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String showAdmin(Map<String, Object> model) {
+	public String showAdmin(Map<String, Object> model,HttpSession session) {
 		AdminFormBean adminForm = new AdminFormBean();
 		adminForm.setCategories(categoryService.getCategories());
 		model.put("adminForm", adminForm);
+		int maxId=questionService.fetchMaxId();
+		session.setAttribute("maxQuestionId", maxId+1);
 		return "admin";
+	}
+	/**
+	 * Used to load the Administrator page. (fetching the categories details onload)
+	 * 
+	 * @param model
+	 *            the Model Map
+	 * @return the view page
+	 */
+	@RequestMapping(value = "/fetchMaxId",method = RequestMethod.POST)
+	public String fetchMax(HttpSession session) {
+		int maxId=questionService.fetchMaxId();
+		session.setAttribute("maxQuestionId", maxId+1);
+		return "maxid";
 	}
 
 	/**
@@ -431,27 +447,19 @@ public class AdminController {
 				return "Invalid file size";
 			}
 			
-			try
-			{
-//				byte[] bytes=file.getBytes();
-//				String rootpath=System.getProperty("raghav");
-//				File dir=new File(rootpath +File.separator +"temfiles");
-//				if(!dir.exists())
-//				{
-//					dir.mkdirs();
-//				}
-//				
-//				File serverfile=new File(dir.getAbsolutePath()+File.separator+name);
-//				BufferedOutputStream stream= new BufferedOutputStream(new FileOutputStream(serverfile));
-//				stream.write(bytes);
-//				stream.close();
-//				/*logger.info("Server File location"+serverfile.getAbsolutePath());*/
-//				System.out.println("Server File location"+serverfile.getAbsolutePath());
-//				return "you have successfully uplad the file="+name;
+			try {
+				String rowsAffected="";
+				if(file.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+					rowsAffected=fileUploadService.processExcelData(file.getInputStream());
+				} else if(file.getContentType().equals("application/vnd.ms-excel")) {
+					rowsAffected=fileUploadService.processExcelDataForEx2003(file.getInputStream());
+				}
 				
-				int rowsAffected=fileUploadService.processExcelData(file.getInputStream());
-				if(rowsAffected==0) {
+				if(rowsAffected.equals("0")) {
 					return "File upload was not successful";
+				}
+				else if(rowsAffected.contains("Same question ")) {
+					return rowsAffected;
 				}
 				return "you have successfully uplad the file";
 				

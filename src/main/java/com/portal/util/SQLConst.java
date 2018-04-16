@@ -28,6 +28,8 @@ public class SQLConst {
 	public static final String findQuestionByCategoryId = "SELECT * FROM AP.TBLQUESTION WHERE CATEGORY_ID = ?";
 
 	public static final String createQuestion = "INSERT INTO AP.TBLQUESTION (QUESTION_DESC,ANSWER_TYPE_ID,CATEGORY_ID,COMPLEXITY) VALUES(?,?,?,?)";
+	
+	public static final String createQuestionWithId = "INSERT INTO AP.TBLQUESTION (QUESTION_ID,QUESTION_DESC,ANSWER_TYPE_ID,CATEGORY_ID,COMPLEXITY) VALUES(?,?,?,?,?)";
 
 	public static final String deleteQuestionById = "DELETE FROM AP.TBLQUESTION WHERE QUESTION_ID = ?";
 
@@ -99,6 +101,10 @@ public class SQLConst {
 			" on user.category_id=cat.category_id inner join  ap.tblusers userdata on user.user_id=userdata.user_id  group by user.user_id,user.category_id, user.create_ts having \r\n" + 
 			" user.create_ts=(select max(create_ts) from ap.tbluseractivity where user_id=user.user_id and category_id=user.category_id); ";
 	
-	public static final String getNumberOfQuestion = "select question_id from ap.TBLQUESTION where question_desc=?";
+	public static final String getNumberOfQuestion = "select question_id from ap.TBLQUESTION where replace(question_desc,' ','')=?";
+	
+	public static final String getMaxIdOfQuestion = "select max(question_id) from ap.TBLQUESTION";
+	
+	public static final String isIdOfQuestionExist = "select question_id from ap.TBLQUESTION a where a.question_id=?";
 
 }

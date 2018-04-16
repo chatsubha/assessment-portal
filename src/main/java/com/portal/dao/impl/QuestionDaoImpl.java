@@ -49,7 +49,7 @@ public class QuestionDaoImpl implements QuestionDao {
 	public void addBulkQuestion(List<Object[]> parameterList) {
 		
 		
-		jdbcTemplate.batchUpdate(SQLConst.createQuestion,parameterList
+		jdbcTemplate.batchUpdate(SQLConst.createQuestionWithId,parameterList
 				);
 	}
 
@@ -122,6 +122,28 @@ public class QuestionDaoImpl implements QuestionDao {
 	public int isSameQuestion(Object[] question) {
 		try {
 			return jdbcTemplate.queryForObject(SQLConst.getNumberOfQuestion, question , Integer.class);
+		}
+		catch (Exception e) {
+			return 0;
+		}
+		
+	}
+	
+	@Override
+	public int isQuestionIdExists(int id) {
+		try {
+			return jdbcTemplate.queryForObject(SQLConst.isIdOfQuestionExist ,new Object[]{id}, Integer.class);
+		}
+		catch (Exception e) {
+			return 0;
+		}
+		
+	}
+	
+	@Override
+	public int fetchMaxIdOfQuestion() {
+		try {
+			return jdbcTemplate.queryForObject(SQLConst.getMaxIdOfQuestion , Integer.class);
 		}
 		catch (Exception e) {
 			return 0;

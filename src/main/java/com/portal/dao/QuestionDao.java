@@ -85,4 +85,15 @@ public interface QuestionDao {
 	 *            the Question Object
 	 */
 	public int isSameQuestion(Object[] question);
+	/**
+	 * return id of question 
+	 * @param question id
+	 *            the Integer Object        
+	 */
+	public int isQuestionIdExists(int id);
+	/**
+	 * return max id of question 
+	 *                  
+	 */
+	public int fetchMaxIdOfQuestion();
 }

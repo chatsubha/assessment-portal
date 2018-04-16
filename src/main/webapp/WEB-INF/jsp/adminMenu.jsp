@@ -14,7 +14,7 @@
   <c:url var="home" value="/" scope="request" />
   
 <link rel="stylesheet" href="../css/jquery-ui.css">
-<script src="../js/applicationScripts.js"></script>
+<script src="../js/applicationScripts.js?V=0.1"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   
   
@@ -164,6 +164,8 @@
 </button>
 --%>
 <br/><br/>
+<label id="maxIdForQstn" title="Note: 1> same id with different question won't be allowed 2> Same id with same question will replace the options and other attributes from current file" style="float: center" class="label label-warning"></label>
+<br/><br/>
 <span  class="alert alert-danger errorUpload" style="visibility: hidden"></span>
 </center>
 </form>
@@ -193,15 +195,30 @@ function getUserActivityForm() {
 		}
 	});
 }
+function fetchMaxId() {
+	jQuery.ajax({
+		type : "POST",
+		url : "/admin/fetchMaxId",
+		success : function(response) {
+        	$("#maxIdForQstn").empty().append(response);
+        }
+	});
+}
+
+var formData;
 function getUploadForm()
 {
+	formData=null;
+	
+	fetchMaxId();
 	 popDialog({
 	        title: 'Excel File Upload',
 	        message: content,
 	        width:600
 	    });
+	 
 }
-var formData;
+
 function appendData(file){
 	formData=new FormData();
 	if(file.prop('files').length > 0)
@@ -209,6 +226,9 @@ function appendData(file){
         file =file.prop('files')[0];
         formData.append("excelFile", file);
     }
+	else {
+		formData=null;
+	}
 	return true;	
 }
 function submitExcelForm() {
@@ -216,6 +236,11 @@ function submitExcelForm() {
 	$("#errorUpload").css("visibility","hidden");
 	$("#errorUpload").empty();
 	$("#errorUpload").removeAttr("class").attr("class","alert alert-danger");
+	if(formData=="" || formData==undefined || formData==null) {
+		$("#errorUpload").css("visibility","visible");
+		$("#errorUpload").empty().append("Please select a file");
+		return false;
+	}
 	jQuery.ajax({
 		type : "POST",
 		enctype: 'multipart/form-data',
@@ -239,12 +264,13 @@ function submitExcelForm() {
 				$("#errorUpload").empty().append("Size of the file should not greater that 5Mb");
 			}
 			else if ("Invalid file type".match(response)) {
-				$("#errorUpload").empty().append("File should be in xlsx format");
+				$("#errorUpload").empty().append("File should be in xlsx/xls format");
 			}
 			else if ("File upload was not successful".match(response)) {
 				$("#errorUpload").empty().append("File upload was not successful");
 			}
 			else if ("you have successfully uplad the file".match(response)) {
+				fetchMaxId();
 				$("#errorUpload").removeAttr("class").attr("class","alert alert-success");
 				$("#errorUpload").empty().append("<span class='glyphicon glyphicon-ok'/>&nbsp;File has been uploaded successfully");
 			}
@@ -252,7 +278,7 @@ function submitExcelForm() {
 				$("#errorUpload").empty().append("File upload was not successful");
 			}
 			else {
-				$("#errorUpload").empty().append("File upload was not successful");
+				$("#errorUpload").empty().append(response);
 			}
 				
 			
@@ -267,6 +293,7 @@ $(document).ready(function() {
     $("#fileUploadDiv .errorUpload").attr("id","errorUpload");
 	content = $("#fileUploadDiv").html();
 	$("#fileUploadDiv #errorUpload").removeAttr("id");
+	$("#fileUploadDiv #maxIdForQstn").removeAttr("id");
     
 });
 

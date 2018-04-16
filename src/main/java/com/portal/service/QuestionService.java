@@ -67,5 +67,10 @@ public interface QuestionService {
 	 * @param question
 	 *            the Question Object
 	 */
-	public void updateQuestion(Question question);
+	public void updateQuestion(Question question);	
+	/**
+	 *fetch max id of question
+	 * 
+	 */
+	public int fetchMaxId();
 }
