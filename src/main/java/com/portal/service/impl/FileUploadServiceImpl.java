@@ -35,14 +35,19 @@ public class FileUploadServiceImpl implements FileUploadService {
 
 	@Override
 	public String processExcelData(InputStream inputStream) {
-		// TODO Auto-generated method stub
+		
 		try {
 			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+			//sheet validation
+			if(workbook.getNumberOfSheets()!=2) {
+				throw new AssessmentException("Number of sheets should be 2.Please make sure that question and option sheet both are present");
+			}
 			XSSFSheet questionSheet = workbook.getSheetAt(0);
 			Iterator<Row> sheetIterator = questionSheet.rowIterator();
 			List<Object[]> parameterList = new ArrayList<Object[]>();
 			while (sheetIterator.hasNext()) {
 				Row row = sheetIterator.next();
+				FileUploadServiceImpl.ValidateExcelRow(row,1);
 				if(row.getRowNum()!=0 && row.getCell(0)!=null) {
 					String questionDesc = row.getCell(1).toString();
 					int questionId = ((Double)row.getCell(0).getNumericCellValue()).intValue();
@@ -93,6 +98,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 			while (sheetIterator.hasNext()) {
 				Row row = sheetIterator.next();
 				if(row.getRowNum()!=0 && row.getCell(0)!=null) {
+					FileUploadServiceImpl.ValidateExcelRow(row,2);
 //					String questionDesc = row.getCell(0).toString();
 //					questionDesc=questionDesc.replaceAll("\n", "<br/>")
 //							                 .replaceAll("\"", "&quot;")
@@ -101,6 +107,9 @@ public class FileUploadServiceImpl implements FileUploadService {
 //					int id=qestionDao.isSameQuestion(new Object[]{questionDesc});
 					int id=((Double)row.getCell(0).getNumericCellValue()).intValue();
 					System.out.println("id=>"+id);
+					if (qestionDao.isQuestionIdExists(id)<=0) {
+						throw new AssessmentException("Question id "+id+" is invalid at row "+row.getRowNum());
+					}
 					optionsDao.deleteOptionsByQuestionId(id);
 					String optionDesc = row.getCell(1).toString();
 					optionDesc=optionDesc.replaceAll("\n", "<br/>")
@@ -130,14 +139,19 @@ public class FileUploadServiceImpl implements FileUploadService {
 	
 	@Override
 	public String processExcelDataForEx2003(InputStream inputStream) {
-		// TODO Auto-generated method stub
+		
 		try {
 			HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
+			//sheet validation
+			if(workbook.getNumberOfSheets()!=2) {
+				throw new AssessmentException("Number of sheets should be 2.Please make sure that question and option sheet both are present");
+			}
 			HSSFSheet questionSheet = workbook.getSheetAt(0);
 			Iterator<Row> sheetIterator = questionSheet.rowIterator();
 			List<Object[]> parameterList = new ArrayList<Object[]>();
 			while (sheetIterator.hasNext()) {
 				Row row = sheetIterator.next();
+				FileUploadServiceImpl.ValidateExcelRow(row,1);
 				if(row.getRowNum()!=0 && row.getCell(0)!=null) {
 					String questionDesc = row.getCell(1).toString();
 					int questionId = ((Double)row.getCell(0).getNumericCellValue()).intValue();
@@ -188,6 +202,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 			while (sheetIterator.hasNext()) {
 				Row row = sheetIterator.next();
 				if(row.getRowNum()!=0 && row.getCell(0)!=null) {
+					FileUploadServiceImpl.ValidateExcelRow(row,2);
 //					String questionDesc = row.getCell(0).toString();
 //					questionDesc=questionDesc.replaceAll("\n", "<br/>")
 //							                 .replaceAll("\"", "&quot;")
@@ -196,6 +211,9 @@ public class FileUploadServiceImpl implements FileUploadService {
 //					int id=qestionDao.isSameQuestion(new Object[]{questionDesc});
 					int id=((Double)row.getCell(0).getNumericCellValue()).intValue();
 					System.out.println("id=>"+id);
+					if (qestionDao.isQuestionIdExists(id)<=0) {
+						throw new AssessmentException("Question id -"+id+" is invalid at row "+row.getRowNum());
+					}
 					optionsDao.deleteOptionsByQuestionId(id);
 					String optionDesc = row.getCell(1).toString();
 					optionDesc=optionDesc.replaceAll("\n", "<br/>")
@@ -222,5 +240,39 @@ public class FileUploadServiceImpl implements FileUploadService {
 		
 		return "1";
 	}
+	
+	private static boolean ValidateExcelRow(Row row,int sheetNo) throws AssessmentException {
+			
+	    //Content validation
+		if(sheetNo==1) {
+			if (row.getCell(0)==null||row.getCell(0).toString().equals("")) {
+				throw new AssessmentException("Question id is missing at row "+row.getRowNum());
+			} else if (row.getCell(1)==null||row.getCell(1).toString().equals("")) {
+				throw new AssessmentException("Question description is missing at row "+row.getRowNum());
+			} else if (row.getCell(2)==null || row.getCell(2).toString().equals("")) {
+				throw new AssessmentException("Answer type is missing at row "
+							+row.getRowNum()+".");
+			} else if (row.getCell(3)==null||row.getCell(3).toString().equals("")) {
+				throw new AssessmentException("Category is missing at row "
+						+row.getRowNum()+".");
+			} else if (row.getCell(4)==null||row.getCell(4).toString().equals("")) {
+				throw new AssessmentException("Complexity is missing at row "
+						+row.getRowNum()+".");
+			}
+			} else if (sheetNo==2) {
+				if (row.getCell(0)==null||row.getCell(0).toString().equals("")) {
+					throw new AssessmentException("Question id is missing at row "+row.getRowNum());
+				} else if (row.getCell(1)==null||row.getCell(1).toString().equals("")) {
+					throw new AssessmentException("Option description is missing at row "+row.getRowNum());
+				} else if (row.getCell(2)==null || row.getCell(2).toString().equals("")) {
+					throw new AssessmentException("Correct Answer is missing at row "
+								+row.getRowNum()+".");
+				} else if (!row.getCell(2).toString().equals("Yes")&&!row.getCell(2).toString().equals("No")) {
+					throw new AssessmentException("Correct Answer should be Yes/No at row "
+							+row.getRowNum()+".Remember it is case sensitive.");
+					}
+			}
+		return true;
+		}
 
 }

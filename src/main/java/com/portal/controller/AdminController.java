@@ -458,9 +458,9 @@ public class AdminController {
 				if(rowsAffected.equals("0")) {
 					return "File upload was not successful";
 				}
-				else if(rowsAffected.contains("Same question ")) {
+				else if(!rowsAffected.equals("1")) {
 					return rowsAffected;
-				}
+				} 
 				return "you have successfully uplad the file";
 				
 			}

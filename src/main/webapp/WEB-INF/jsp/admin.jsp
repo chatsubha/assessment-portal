@@ -95,15 +95,15 @@ margin-left:5%;width:90%
 			<input type="hidden" name="categoryId" id="categoryId" />
 			<input type="hidden" name="categoryNameId" id="categoryNameId">
 			<div class="panel panel-info">
- <div class="panel-heading"><p><span class="glyphicon glyphicon-info-sign"></span>&nbsp;Category Info </p>	</div>
+ <div class="panel-heading"><p><span class="glyphicon glyphicon-info-sign"></span>&nbsp;Course details </p>	</div>
     <div class="panel-body">
 			<table id="category" class="table table-hover">
 				<thead>
 					<tr>
-						<th>Category Name</th>
-						<th>Category Description</th>
-						<th>Cutoff Mark</th>
-						<th>Maximum Number of Attempt</th>
+						<th>Course Name</th>
+						<th>Course Description</th>
+						<th>Pass Mark (%)</th>
+						<th>Maximum Number of Attempts</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -130,7 +130,7 @@ margin-left:5%;width:90%
 			<button onclick="javascript:loadCategoryDetails('','')"
 				class="btn btn-primary" style="margin-right: 2%; float: right;"
 				type="button">
-				<span class="glyphicon glyphicon-plus"></span>&nbsp;Add Category</button>
+				<span class="glyphicon glyphicon-plus"></span>&nbsp;Add Course</button>
 		</form:form>
 	</div>
 	<div id="usersHistoryField"></div>
@@ -173,7 +173,7 @@ margin-left:5%;width:90%
 							style="color: red;"></span></td>
 					</tr> -->
 					<tr>
-						<td align="right" style="padding-right: 10px;"><form:label path="category.categoryName">Category Name   </form:label></td>
+						<td align="right" style="padding-right: 10px;"><form:label path="category.categoryName">Course Name   </form:label></td>
 						<td><form:input path="category.categoryName"
 								id="categoryFormCategoryName" class="form-control"
 								placeholder="Enter Category Name" maxlength="45"
@@ -181,7 +181,7 @@ margin-left:5%;width:90%
 								style="margin-bottom: 5px;margin-top: 5px;" /></td>
 					</tr>
 					<tr>
-						<td align="right" style="padding-right: 10px;"><form:label path="category.categoryDesc">Category Description </form:label></td>
+						<td align="right" style="padding-right: 10px;"><form:label path="category.categoryDesc">Course Description </form:label></td>
 						<td><form:textarea path="category.categoryDesc"
 								id="categoryFormCategoryDesc" class="form-control"
 								placeholder="Enter Category Description" maxlength="500"
@@ -190,7 +190,7 @@ margin-left:5%;width:90%
 								style="margin-bottom: 5px;margin-top: 5px;" /></td>
 					</tr>
 					<tr>
-						<td align="right" style="padding-right: 10px;"><form:label path="category.cutOff">Pass Mark </form:label></td>
+						<td align="right" style="padding-right: 10px;"><form:label path="category.cutOff">Pass Mark (%) </form:label></td>
 						<td><form:input path="category.cutOff"
 								id="categoryFormCategoryCutOff" class="form-control"
 								placeholder="Enter Category CutOff"
@@ -199,7 +199,7 @@ margin-left:5%;width:90%
 								style="margin-bottom: 5px;margin-top: 5px;" /></td>
 					</tr>
 					<tr>
-						<td align="right" style="padding-right: 10px;"><form:label path="category.maximumAttempts">Maximum Number Of Attempt </form:label></td>
+						<td align="right" style="padding-right: 10px;"><form:label path="category.maximumAttempts">Maximum Number Of Attempts </form:label></td>
 						<td><form:input path="category.maximumAttempts"
 								id="categoryFormMaxNoOfAttempt" class="form-control"
 								placeholder="Enter Maximum Number Of Attempt"

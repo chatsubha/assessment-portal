@@ -118,12 +118,12 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter implements Ser
 			auth
 				.ldapAuthentication()
 				.contextSource(contextSource)
-						.userDnPatterns(ldapUserDnPattern).userSearchBase("ou=")
+						.userDnPatterns(ldapUserDnPattern).userSearchBase("ou=Cognizant")
 		                .userSearchFilter("(userprincipalname={0})");
 		} else {
 	        auth
 	        .inMemoryAuthentication()
-	            .withUser("").password("").roles("USER")
+	            .withUser("687915@cognizant.com").password("Myroll_sh22").roles("USER")
 	            .and()
 	            .withUser("admin").password("admin").roles("ADMIN");
 		}
