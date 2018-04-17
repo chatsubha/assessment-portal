@@ -123,7 +123,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter implements Ser
 		} else {
 	        auth
 	        .inMemoryAuthentication()
-	            .withUser("687915@cognizant.com").password("Myroll_sh22").roles("USER")
+	            .withUser("user").password("pass").roles("USER")
 	            .and()
 	            .withUser("admin").password("admin").roles("ADMIN");
 		}
